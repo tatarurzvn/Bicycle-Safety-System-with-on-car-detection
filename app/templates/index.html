@@ -1,0 +1,24 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+Bicycle Safety system using on-car detection
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-default">
+</nav>
+{% endblock %}
+
+{% block content %}
+<pre id="output"></pre>
+<script>
+	var output = document.getElementById('output');
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', '{{ url_for('stream_log') }}');
+	xhr.send();
+
+	setInterval(function() {
+		output.textContent = xhr.responseText;
+	}, 3000);
+</script>
+{% endblock %}
