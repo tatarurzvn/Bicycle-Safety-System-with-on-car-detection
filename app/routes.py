@@ -1,6 +1,7 @@
 from app import app
-from flask import render_template
-from time import sleep
+from flask import render_template, jsonify
+from time import sleep, asctime
+from psutil import virtual_memory, cpu_percent
 
 @app.route('/')
 @app.route('/index')
@@ -19,3 +20,19 @@ def stream_log():
        		yield "File not found error"
     return app.response_class(generate(), mimetype='text/plain')
 
+@app.route('/_hardware_usage')
+def hardware_usage():
+    return jsonify(mem_use=str(virtual_memory()[2]) + r'%',
+                   cpu_use=str(cpu_percent()) + r'%')
+
+usage_history = list(["Time", "Memory", "Cpu"])
+@app.route('/_hardware_usage_gcharts')
+def hardware_usage_gcharts():
+    global usage_history
+    max_data = 20
+
+    if len(usage_history) > max_data:
+        usage_history = usage_history[:1] + usage_history[2:]
+    new_data = [asctime(), virtual_memory()[2], cpu_percent()]
+    usage_history.append(new_data)
+    return jsonify(usage_history)

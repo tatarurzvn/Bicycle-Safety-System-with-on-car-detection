@@ -30,8 +30,8 @@ Bicycle Safety system using on-car detection
 				<th>Memory Usage</th>
 			</tr>
 			<tr>
-				<td>10%</td>
-				<td>87%</td>
+				<td id="cpu_use">N/A</td>
+				<td id="mem_use">N/A</td>
 			</tr>
 		</table>
 	</div>
@@ -46,6 +46,24 @@ Bicycle Safety system using on-car detection
 	</div>
 </div>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type=text/javascript>
+	$(function() {
+		function update() {
+			$.getJSON($SCRIPT_ROOT + '/_hardware_usage',
+				function(data) {
+					$('#cpu_use').text(data.cpu_use);
+					$('#mem_use').text(data.mem_use);
+				});
+		}
+		setInterval(update, 3000);
+		update();
+	});
+</script>
+
 <script>
 	var output = document.getElementById('output');
 	var xhr = new XMLHttpRequest();
@@ -56,4 +74,15 @@ Bicycle Safety system using on-car detection
 		output.textContent = xhr.responseText;
 	}, 3000);
 </script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		
+	}
+</script>
+
 {% endblock %}
