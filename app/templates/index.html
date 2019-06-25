@@ -6,11 +6,46 @@ Bicycle Safety system using on-car detection
 
 {% block navbar %}
 <nav class="navbar navbar-default">
+	<h2 style="padding-left: 10px;">Administrator console</h2>
 </nav>
 {% endblock %}
 
 {% block content %}
-<pre id="output"></pre>
+<div class="container-fluid">
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h3>Process Logs</h3></div>
+		<div class="panel-body">
+			<pre id="output"></pre>
+		</div>
+	</div>
+	
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h3>Hardware usage</h3></div>
+		<div class="panel-body">
+			<p>Watch real time CPU, memory usage of the device</p>
+		</div>
+		<table class="table table-hover">
+			<tr>
+				<th>CPU Usage</th>
+				<th>Memory Usage</th>
+			</tr>
+			<tr>
+				<td>10%</td>
+				<td>87%</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h3>Reset</h3></div>
+		<div class="panel-body">
+			<p>Click the button bellow to reset the detection and locking module</p>
+			<br>
+			<button style="text-align: center;" type="button" class="btn btn-danger">Reset</button>
+		</div>
+	</div>
+</div>
+
 <script>
 	var output = document.getElementById('output');
 	var xhr = new XMLHttpRequest();

@@ -10,9 +10,12 @@ def index():
 @app.route('/_stream')
 def stream_log():
     def generate():
-        with open('/home/pi/Desktop/logs.log') as f:
-            while True:
-                yield f.read()
-                sleep(3)
+    	try:
+        	with open('/home/pi/Desktop/logs.log') as f:
+        	    while True:
+        	        yield f.read()
+        	        sleep(3)
+       	except Exception as err:
+       		yield "File not found error"
     return app.response_class(generate(), mimetype='text/plain')
 
