@@ -26,19 +26,23 @@ Bicycle Safety system using on-car detection
 		</div>
 		<table class="table table-hover">
 			<tr>
-				<th>CPU Usage</th>
-				<th>Memory Usage</th>
+				<th class="text-center">CPU Usage</th>
+				<th class="text-center">Memory Usage</th>
 			</tr>
 			<tr>
-				<td id="cpu_use">N/A</td>
-				<td id="mem_use">N/A</td>
+				<td class="text-center" id="cpu_use">N/A</td>
+				<td class="text-center" id="mem_use">N/A</td>
 			</tr>
 		</table>
+		<br>
+		<div id="mem_use_chart"></div>
+		<br>
 	</div>
 
-	<div class="panel panel-primary">
+	<div id="reset_container" class="panel panel-primary" onmouseover="document.getElementById('reset_alert').style.display = 'block';">
 		<div class="panel-heading"><h3>Reset</h3></div>
 		<div class="panel-body">
+			<div id="reset_alert" class="alert alert-warning" role="alert" style="display: none;">Resetting the device might not work correctly. Please ensure that the auto WiFi is set in the Raspberry Pi</div>
 			<p>Click the button bellow to reset the detection and locking module</p>
 			<br>
 			<button style="text-align: center;" type="button" class="btn btn-danger">Reset</button>
@@ -77,12 +81,30 @@ Bicycle Safety system using on-car detection
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-	google.charts.load('current', {'packages':['corechart']});
-	google.charts.setOnLoadCallback(drawChart);
+	google.charts.load('current', {
+		callback: function() {
+			drawChart();
+			setInterval(drawChart, 3000);
 
-	function drawChart() {
-		
-	}
+			function drawChart() {
+				$.ajax({
+					url: "_hardware_usage_gcharts",
+					type: "get",
+					success: function (json) {
+						var data = google.visualization.arrayToDataTable(json);
+						var chart = new google.visualization.LineChart(document.getElementById("mem_use_chart"));
+						var options = {
+							title: "Resource usage chart",
+							curveType: "function",
+							legend: { position: 'bottom' }
+						};
+						chart.draw(data, options);
+					}
+				});
+			}
+		},
+		packages: ['corechart']
+	});
 </script>
 
 {% endblock %}

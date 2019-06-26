@@ -2,6 +2,7 @@ from app import app
 from flask import render_template, jsonify
 from time import sleep, asctime
 from psutil import virtual_memory, cpu_percent
+from datetime import datetime
 
 @app.route('/')
 @app.route('/index')
@@ -25,7 +26,7 @@ def hardware_usage():
     return jsonify(mem_use=str(virtual_memory()[2]) + r'%',
                    cpu_use=str(cpu_percent()) + r'%')
 
-usage_history = list(["Time", "Memory", "Cpu"])
+usage_history = list([["Time", "Memory", "Cpu"]])
 @app.route('/_hardware_usage_gcharts')
 def hardware_usage_gcharts():
     global usage_history
@@ -33,6 +34,8 @@ def hardware_usage_gcharts():
 
     if len(usage_history) > max_data:
         usage_history = usage_history[:1] + usage_history[2:]
-    new_data = [asctime(), virtual_memory()[2], cpu_percent()]
+    current_time = datetime.now()
+    current_time = str(current_time.hour) + ":" + str(current_time.minute)
+    new_data = [current_time, virtual_memory()[2], cpu_percent()]
     usage_history.append(new_data)
     return jsonify(usage_history)
