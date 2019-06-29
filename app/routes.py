@@ -35,7 +35,7 @@ def hardware_usage_gcharts():
     if len(usage_history) > max_data:
         usage_history = usage_history[:1] + usage_history[2:]
     current_time = datetime.now()
-    current_time = str(current_time.hour) + ":" + str(current_time.minute)
+    current_time = str(current_time.hour) + ":" + str(current_time.minute) + "." + str(current_time.second)
     new_data = [current_time, virtual_memory()[2], cpu_percent()]
     usage_history.append(new_data)
     return jsonify(usage_history)

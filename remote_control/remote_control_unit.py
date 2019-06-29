@@ -12,18 +12,18 @@ class Remote_Control_Unit():
             self.logger = logger
         
         def lock(self):
-            logger.warning("Locking the car")
+            self.logger.warning("Locking the car")
             GPIO.output(LOCK_PIN, GPIO.HIGH)
             time.sleep(1)
             GPIO.output(LOCK_PIN, GPIO.LOW)
-            logger.warning("Locking done")
+            self.logger.warning("Locking done")
         
         def unlock(self):
-            logger.warning("Unlocking the car")
+            self.logger.warning("Unlocking the car")
             GPIO.output(UNLOCK_PIN, GPIO.HIGH)
             time.sleep(1)
             GPIO.output(UNLOCK_PIN, GPIO.LOW)
-            logger.warning("Unlocked the car")
+            self.logger.warning("Unlocked the car")
         
         def action(self, action):
             if action == "lock":
