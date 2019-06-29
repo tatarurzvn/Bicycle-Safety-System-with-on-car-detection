@@ -34,6 +34,10 @@ def main():
 				if desired_symbol in detection[1]:
 					logger.warning("Bicycle detected")
 					bicycle_detected = True
+			if bicycle_detected:
+				remote.lock()
+				break
+				
 		if not bicycle_detected:
 			logger.info("Road is clear")	
 			
